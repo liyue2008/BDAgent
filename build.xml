@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="BDAgent" default="jar" basedir=".">
+    <property environment="env"/>
+    <property name="dir.build" value="bin"/>
+    <property name="dir.src" value="src"/>
+    <property name="dir.lib" value="lib"/>
+    <property name="dir.dist" value="dist"/>
+    <property name="jar_file" value="bdagent"/>
+    <property name="version_file" value="VERSION"/>
+    <property name="dir.script" value="script"/>
+    <property name="debug" value="true"/>
+    
+	<fileset dir="${dir.lib}" includes="*.jar" id="library.fileset" />
+    
+    <target name="clean" description="Destroys all generated files and dirs.">
+        <delete includeEmptyDirs="true">
+            <fileset dir="${dir.build}" includes="**/*"/>
+        </delete>
+
+        <delete includeEmptyDirs="true">
+            <fileset dir="${dir.dist}" includes="**/*"/>
+        </delete>
+    </target>
+
+    <target name="remove-cvs" description="remove all CVS Directories.">    
+        <defaultexcludes remove="**/CVS"/> 
+        <defaultexcludes remove="**/CVS/**"/>    
+        <delete includeemptydirs="true">    
+            <fileset dir="${basedir}" includes="**/CVS/**"/>    
+        </delete>    
+    </target>
+
+    <target name="compile" description="compile the source file. The compiled class will be in the directory '${dir.build}'.">
+    	<mkdir dir="${dir.build}" />
+    	<javac includeAntRuntime="false" encoding="UTF-8" debug="${debug}" srcdir="${dir.src}" destdir="${dir.build}">
+        <classpath>
+         <fileset dir="${dir.lib}">
+            <include name="*.jar"/>
+          </fileset>
+       </classpath>
+    		
+       </javac>
+    	
+    </target>
+
+	<target name="jar" depends="compile">
+        <loadfile   property="version"
+                    srcFile="${version_file}"
+                    encoding="GBK"/>
+        <echo message="VERSION:${version}"/>
+        <echo message="building jar file" />
+        <mkdir dir="${dir.dist}" />
+        <jar destfile="${dir.dist}/${jar_file}-${version}.jar" basedir="${dir.build}"
+             excludes="configuration.properties,logback.xml">
+
+	</jar>
+
+
+
+        <mkdir dir="${dir.dist}/logs" />
+        <echo message="copying all library to dist/lib" />
+        <copy todir="${dir.dist}">
+            <fileset refid="library.fileset" />
+        </copy>
+        <echo message="copying all script to dist" />
+        <copy file="${dir.src}/configuration.properties" todir="${dir.dist}" />
+        <copy file="${dir.src}/logback.xml" todir="${dir.dist}" />
+        <copy file="${version_file}" todir="${dir.dist}" />
+        <copy todir="${dir.dist}">
+            <fileset dir="${dir.script}"/>
+        </copy>
+	</target>
+
+
+</project>
