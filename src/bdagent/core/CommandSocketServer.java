@@ -1,5 +1,6 @@
 package bdagent.core;
 
+import bdagent.util.SocketHelp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,13 +33,13 @@ public class CommandSocketServer extends Thread{
     }
 
     public void run(){
-        ServerSocket server = null;
-        Socket socket = null;
+
+        Socket socket;
         while(true){
             try {
                 //阻塞在此处，等待客户端连接
                 //Block here and waiting for connection
-                socket = SocketHelper.waitForConnection(listenOnPort,false);
+                socket = SocketHelp.waitForConnection(listenOnPort, false);
 
                 //连接成功后，开始接收命令
                 //Ready for command

@@ -14,11 +14,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: liyue
- * Date: 6/14/13
- * Time: 5:53 PM
- * To change this template use File | Settings | File Templates.
+ * Command 消息处理类，实现了简单的同步和异步消息封装。
+ * 用于在Server和Client之间传递命令消息。
+ * Command message service class.
+ * Simple sync and async message service over tcp between server and client.
+ *
+ * @author Liyue
  */
 public class CommandChannel{
     private final static Logger logger = LoggerFactory

@@ -1,5 +1,6 @@
 package bdagent.core;
 
+import bdagent.util.SocketHelp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +43,7 @@ public class CommandSocketClient extends Thread {
             try {
                 //连接Server端
                 //Connect to server
-                socket = SocketHelper.connect(serverHostAddress,serverPort,false);
+                socket = SocketHelp.connect(serverHostAddress, serverPort, false);
 
                 //连接成功后，开始接收命令
                 //Ready for command

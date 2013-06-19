@@ -1,5 +1,6 @@
 package bdagent.core;
 
+import bdagent.util.SocketHelp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,11 +9,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Created with IntelliJ IDEA.
- * User: liyue
- * Date: 6/15/13
- * Time: 11:39 AM
- * To change this template use File | Settings | File Templates.
+ * 创建Socket管道的临时线程，管道创建完成即退出。
+ * Temp thread for socket pipe creation. the thread will terminate after pipe creation.
+ *
+ * @author Liyue
  */
 public class PipeCreationThread extends Thread {
     private final static Logger logger = LoggerFactory
@@ -28,8 +28,10 @@ public class PipeCreationThread extends Thread {
 
         try {
             //打开端口，等待Client连接
-            Socket clientSocket = SocketHelper.waitForConnection(channelServerSocket);
+            //Open socket and waiting from incoming connection
+            Socket clientSocket = SocketHelp.accept(channelServerSocket);
             //连接上后，桥接
+            //Create pipes when the connection established.
             PipeThread.pipeSockets(localSocket,clientSocket);
         } catch (IOException e) {
             logger.warn("Exception", e);

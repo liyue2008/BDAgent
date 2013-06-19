@@ -1,4 +1,4 @@
-package bdagent.core;
+package bdagent.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,14 +12,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Created with IntelliJ IDEA.
- * User: liyue
- * Date: 6/14/13
- * Time: 8:35 PM
- * To change this template use File | Settings | File Templates.
+ * Help class for socket.
+ *
+ *
+ * @author Liyue
  */
-public class SocketHelper {
-    private final static Logger logger = LoggerFactory.getLogger(SocketHelper.class);
+public class SocketHelp {
+    private final static Logger logger = LoggerFactory.getLogger(SocketHelp.class);
 
     public static Socket connect(String hostAddr,int port,boolean disableSSL) throws IOException {
         Socket socket;
@@ -46,14 +45,15 @@ public class SocketHelper {
         Socket socket;
         logger.info("Starting socket server on port " + listenOnPort + "...");
         server = getServerSocket(listenOnPort,disableSSL);
-        socket= waitForConnection(server);
+        socket= accept(server);
+        server.close();
         return socket;
     }
 
-    public static Socket waitForConnection(ServerSocket serverSocket) throws IOException{
+    public static Socket accept(ServerSocket serverSocket) throws IOException{
         Socket socket;
         socket = serverSocket.accept();
-        serverSocket.close();
+
         logger.info("Connection accepted from: " + socket.getInetAddress().getHostAddress() + ".");
         return socket;
     }
@@ -72,5 +72,28 @@ public class SocketHelper {
             server = factory.createServerSocket(listenOnPort);
         }
         return server;
+    }
+
+
+    public static void closeServerSocket(ServerSocket serverSocket) {
+        if(null != serverSocket){
+            try {
+                serverSocket.close();
+            } catch (IOException e1) {
+                logger.warn("Exception",e1);
+
+            }
+        }
+    }
+
+    public static void closeSocket(Socket socket) {
+        if(null != socket){
+            try {
+                socket.close();
+            } catch (IOException e1) {
+                logger.warn("Exception",e1);
+
+            }
+        }
     }
 }

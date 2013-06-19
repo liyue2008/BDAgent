@@ -1,5 +1,6 @@
 package bdagent.core;
 
+import bdagent.util.SocketHelp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,11 +10,13 @@ import java.net.Socket;
 import java.util.Date;
 
 /**
- * Created with IntelliJ IDEA.
- * User: liyue
- * Date: 6/14/13
- * Time: 8:18 PM
- * To change this template use File | Settings | File Templates.
+ * CMD_C2S_OPENSOCKET，CMD_S2C_OPENSOCKET 消息回调实现。
+ * Implementation of CommandHandler_I for command: CMD_C2S_OPENSOCKET，CMD_S2C_OPENSOCKET .
+ *
+ *
+ * Interface definition for command reply handler.
+ *
+ * @author Liyue
  */
 public class CommandHandlerOpenSocket implements CommandHandler_I {
     private final static Logger logger = LoggerFactory
@@ -58,9 +61,9 @@ public class CommandHandlerOpenSocket implements CommandHandler_I {
         int destPort = Integer.parseInt(sp[1]);
         int serverPort = Integer.parseInt(sp[2]);
         //连接目的端口
-        Socket destSocket=SocketHelper.connect(destHostAddr, destPort, true);
+        Socket destSocket= SocketHelp.connect(destHostAddr, destPort, true);
         //连接Server
-        Socket serverSocket= SocketHelper.connect(serverHostAddr,serverPort,false);
+        Socket serverSocket= SocketHelp.connect(serverHostAddr, serverPort, false);
         //桥接
         PipeThread.pipeSockets(destSocket,serverSocket);
         //回复消息
@@ -84,11 +87,11 @@ public class CommandHandlerOpenSocket implements CommandHandler_I {
         int serverPort;
         //创建一个ServerSocket用于等待Client连入，端口随机。
         //注意：此处还没有打开这个ServerSocket
-        ServerSocket serverSocket= SocketHelper.getServerSocket(0,false);
+        ServerSocket serverSocket= SocketHelp.getServerSocket(0, false);
         serverPort = serverSocket.getLocalPort();
 
         //连接目的端口
-        Socket destSocket=SocketHelper.connect(destHostAddr, destPort, true);
+        Socket destSocket= SocketHelp.connect(destHostAddr, destPort, true);
         //在一个新线程中打开这个ServerSocket，等待Client连入。
         new PipeCreationThread(serverSocket,destSocket).start();
 

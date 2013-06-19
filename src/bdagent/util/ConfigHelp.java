@@ -40,11 +40,9 @@ public class ConfigHelp {
 	public static Map<String,String> getAllConfig(){
 		Map<String,String> result = new HashMap<String, String>();
 
-		Iterator<Entry<Object, Object>> it = properties.entrySet().iterator();
-		while (it.hasNext()){
-			Entry<Object, Object> pairs = (Entry<Object, Object>)it.next();
-			result.put(String.valueOf(pairs.getKey()),String.valueOf(pairs.getValue()));
-		}
+        for (Entry<Object, Object> pairs : properties.entrySet()) {
+            result.put(String.valueOf(pairs.getKey()), String.valueOf(pairs.getValue()));
+        }
 
 		return result;
 	}
@@ -88,8 +86,8 @@ public class ConfigHelp {
 	private static String getProperties(String key,String defaultValue){
 		if(properties==null){
 			try{
-				String path = ProgramPathHelper.getProgramPath() +System.getProperty("file.separator")+"configuration.properties";
-				URL url = null;
+				String path = ProgramPathHelp.getProgramPath() +System.getProperty("file.separator")+"configuration.properties";
+				URL url;
 				File file = new File(path);
 				try {
 					if (file.exists()) {
@@ -111,15 +109,16 @@ public class ConfigHelp {
 			}catch(Exception ex){
 				logger.warn("read configuration.properties while error", ex);
 			}
-		}
-		try{
-			String result = properties.getProperty(key);
-			if(result!=null && !"".equals(result)){
-				return result;
-			}
-		}catch(Exception ex){
-			logger.warn("return  configuration.properties value while error", ex);
-		}
+		}else{
+            try{
+                String result = properties.getProperty(key);
+                if(result!=null && !"".equals(result)){
+                    return result;
+                }
+            }catch(Exception ex){
+                logger.warn("return  configuration.properties value while error", ex);
+            }
+        }
 		return defaultValue;
 	}
 }

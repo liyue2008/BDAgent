@@ -42,11 +42,12 @@ public class PipeThread implements Runnable {
         logger.info("Pipe socket broken, close pipe.");
         try {
             in.close();
-        } catch (Exception e1) {
+        } catch (Exception ignored) {
         }
         try {
+
             out.close();
-        } catch (Exception e1) {
+        } catch (Exception ignored) {
         }
 
 //        try {

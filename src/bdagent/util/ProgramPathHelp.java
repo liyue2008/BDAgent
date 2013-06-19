@@ -3,10 +3,10 @@ package bdagent.util;
 import java.net.URL;
 import java.net.URLDecoder;
 
-public class ProgramPathHelper {
+public class ProgramPathHelp {
 
 	public static String getProgramPath() {
-		Class<ProgramPathHelper> cls = ProgramPathHelper.class;
+		Class<ProgramPathHelp> cls = ProgramPathHelp.class;
 		ClassLoader loader = cls.getClassLoader();
 		//
 		// Get the full name of the class.
@@ -42,7 +42,10 @@ public class ProgramPathHelper {
 		//
 		// Get path information form the instance of URL.
 		//
-		String retPath = url.getPath();
+        String retPath = null;
+        if(null!=url){
+		    retPath = url.getPath();
+        }
 		//
 		// Delete protocol name "file:" form path information.
 		//

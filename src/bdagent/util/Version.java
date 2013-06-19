@@ -6,7 +6,7 @@ import java.io.*;
 public class Version {
     //public static final String VERSION = "V 0.9.00";
     public static String getVersion(){
-        String path = ProgramPathHelper.getProgramPath() + File.separator + "VERSION";
+        String path = ProgramPathHelp.getProgramPath() + File.separator + "VERSION";
         System.out.println("Version file: " + path);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
