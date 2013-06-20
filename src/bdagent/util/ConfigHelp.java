@@ -106,20 +106,21 @@ public class ConfigHelp {
 				InputStream in =  new BufferedInputStream(new FileInputStream(new File(url.toURI())));
 				properties =  new Properties(); 
 				properties.load(in);
+
 			}catch(Exception ex){
 				logger.warn("read configuration.properties while error", ex);
 			}
-		}else{
-            try{
-                String result = properties.getProperty(key);
-                if(result!=null && !"".equals(result)){
-                    return result;
-                }
-            }catch(Exception ex){
-                logger.warn("return  configuration.properties value while error", ex);
+		}
+
+        try {
+            String result = properties.getProperty(key);
+            if(result!=null && !"".equals(result)){
+                return result;
             }
+        } catch (Exception e) {
+            logger.warn("read configuration.properties while error", e);
         }
-		return defaultValue;
+        return defaultValue;
 	}
 }
 	
